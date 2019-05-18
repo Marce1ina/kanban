@@ -1,0 +1,23 @@
+.card {
+    min-height: 50px;
+    min-width: 40px;
+    padding: 8px;
+    border: 2px dotted #55E6C1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    margin: 10px;
+}
+
+.delete-card {
+    color: #F8EFBA;
+    font-size: 10px;
+    font-weight: bold;
+    position: absolute;
+    top: 4px;
+    right: 2px;
+    background: transparent;
+    border: none;
+}

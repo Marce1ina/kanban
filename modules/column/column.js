@@ -1,5 +1,5 @@
 import Card from "../card/card.js";
-import generateId from "../utils.js";
+import generateId from "../../../utils.js";
 
 export default function Column ({ name, parentBoardId }) {
     this.name = name;

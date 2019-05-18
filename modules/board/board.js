@@ -1,5 +1,5 @@
 import Column from "../column/column.js";
-import generateId from "../utils.js";
+import generateId from "../../../utils.js";
 
 export default function Board (name) {
     this.name = name;

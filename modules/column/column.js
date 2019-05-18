@@ -22,6 +22,13 @@ Column.prototype = {
             })
         );
 
+        const cardsContainer = document.querySelector(`#${this.id} #cards-container`);
+
+        Sortable.create(cardsContainer, {
+            group: 'cards',
+            sort: true
+        });
+
         this.instance = document.querySelector(`#${this.parentBoardId} #${this.id}`);
 
         this

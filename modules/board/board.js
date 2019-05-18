@@ -21,6 +21,13 @@ Board.prototype = {
             })
         );
 
+        const columnsContainer = document.querySelector(`#${this.id} #columns-container`);
+
+        Sortable.create(columnsContainer, {
+            group: 'columns',
+            sort: true
+        });
+
         this.instance = document.getElementById(this.id);
 
         this

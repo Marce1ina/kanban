@@ -9,16 +9,16 @@
 	<div id="board-container" />
 
   <script id="board-template" type="x-tmpl-mustache">
-    <div class="board">
-      <h1 class="board-name">{{ boardName }}</h1>
+    <div class="board" id="{{ id }}">
+      <h1 class="board-name">{{ name }}</h1>
       <button class="create-column">Add a column</button>
       <div id="columns-container"></div>
     </div>
   </script>
 
   <script id="column-template" type="x-tmpl-mustache">
-    <div class="column">
-      <h3 class="column-name">{{ columnName }}</h3>
+    <div class="column" id="{{ id }}">
+      <h3 class="column-name">{{ name }}</h3>
       <button class="delete-column">X</button>
       <button class="create-card">New</button>
       <div id="cards-container"></div>
@@ -26,8 +26,8 @@
   </script>
 
   <script id="card-template" type="x-tmpl-mustache">
-    <div class="card">
-      <h3 class="card-name">{{ cardName }}</h3>
+    <div class="card" id="{{ id }}">
+      <h3 class="card-name">{{ name }}</h3>
       <button class="delete-card">X</button>
     </div>
   </script>

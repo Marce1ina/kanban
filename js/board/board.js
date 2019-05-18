@@ -1,7 +1,9 @@
 import Column from "../column/column.js";
+import generateId from "../utils.js";
 
-export default function Board (boardName) {
-    this.boardName = boardName;
+export default function Board (name) {
+    this.name = name;
+    this.id = generateId();
 }
 
 Board.prototype = {
@@ -13,13 +15,24 @@ Board.prototype = {
 
         boardContainer.insertAdjacentHTML(
             'beforeend',
-            Mustache.render(boardTemplate, {boardName: this.boardName})
+            Mustache.render(boardTemplate, {
+                name: this.name,
+                id: this.id
+            })
         );
 
-        document.querySelector("button.create-column").addEventListener("click", this.addColumn);
+        this.instance = document.getElementById(this.id);
+
+        this
+            .instance
+            .querySelector("button.create-column")
+            .addEventListener("click", this.addColumn.bind(this));
     },
 
     addColumn: function () {
-        new Column(prompt("New column name")).render();
+        new Column({
+            name: prompt("New column name"),
+            parentBoardId: this.id
+        }).render();
     }
 }

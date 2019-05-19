@@ -82,6 +82,11 @@
   border: none;
 }
 
+.cards-container {
+  min-height: 10px;
+  width: 100%;
+}
+
 .card {
   min-height: 50px;
   min-width: 40px;
@@ -108,6 +113,10 @@
   right: 2px;
   background: transparent;
   border: none;
+}
+
+.card-ghost {
+  background: #b4507f;
 }
 
 body {

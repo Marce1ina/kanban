@@ -1,35 +1,24 @@
-import generateId from "../../../utils.js";
+import httpRequest from "../httpRequest.js";
+import renderFromTemplate from "../renderFromTemplate.js";
 
-export default function Card ({ name, parentColumnId }) {
+export default function Card({ name, id, parentColumnId }) {
     this.name = name;
-    this.id = generateId();
+    this.id = id;
     this.parentColumnId = parentColumnId;
 }
 
 Card.prototype = {
-    render: function () {
-        const cardsContainer = document.querySelector(`#${this.parentColumnId} #cards-container`);
+    render: function() {
+        const cardsContainer = document.querySelector(`[data-id="${this.parentColumnId}"] #cards-container`);
         const cardTemplate = document.getElementById("card-template").innerHTML;
 
-        Mustache.parse(cardTemplate);
+        renderFromTemplate.call(this, cardsContainer, cardTemplate);
 
-        cardsContainer.insertAdjacentHTML(
-            'beforeend',
-            Mustache.render(cardTemplate, {
-                name: this.name,
-                id: this.id
-            })
-        );
-
-        this.instance = document.querySelector(`#${this.parentColumnId} #${this.id}`);
-
-        this
-            .instance
-            .querySelector("button.delete-card")
-            .addEventListener("click", this.destroy.bind(this));
+        this.instance = document.querySelector(`[data-id="${this.id}"]`);
+        this.instance.querySelector("button.delete-card").addEventListener("click", this.destroy.bind(this));
     },
 
-    destroy: function () {
-        this.instance.remove();
+    destroy: function() {
+        httpRequest(`/card/${this.id}`, "DELETE").then(() => this.instance.remove());
     }
-}
+};

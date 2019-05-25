@@ -1,45 +1,44 @@
 import Column from "../column/column.js";
-import generateId from "../../../utils.js";
+import httpRequest from "../httpRequest.js";
+import renderFromTemplate from "../renderFromTemplate.js";
 
-export default function Board (name) {
-    this.name = name;
-    this.id = generateId();
-}
+export default function Board() {}
 
 Board.prototype = {
-    render: function () {
+    render: function() {
         const boardContainer = document.getElementById("board-container");
         const boardTemplate = document.getElementById("board-template").innerHTML;
 
-        Mustache.parse(boardTemplate);
+        httpRequest("/board", "GET").then(resp => {
+            this.name = resp.name;
+            this.id = resp.id;
 
-        boardContainer.insertAdjacentHTML(
-            'beforeend',
-            Mustache.render(boardTemplate, {
-                name: this.name,
-                id: this.id
-            })
-        );
+            renderFromTemplate.call(this, boardContainer, boardTemplate);
+            this.instance = document.querySelector(`[data-id="${this.id}"]`);
+            if (resp.columns) this.setupColumns(resp.columns);
 
-        const columnsContainer = document.querySelector(`#${this.id} #columns-container`);
+            const columnsContainer = this.instance.querySelector("#columns-container");
 
-        Sortable.create(columnsContainer, {
-            group: 'columns',
-            sort: true
+            Sortable.create(columnsContainer, {
+                group: "columns",
+                sort: true
+            });
+
+            this.instance.querySelector("button.create-column").addEventListener("click", this.createColumn.bind(this));
         });
-
-        this.instance = document.getElementById(this.id);
-
-        this
-            .instance
-            .querySelector("button.create-column")
-            .addEventListener("click", this.addColumn.bind(this));
     },
 
-    addColumn: function () {
-        new Column({
-            name: prompt("New column name"),
-            parentBoardId: this.id
-        }).render();
+    setupColumns: function(columns) {
+        columns.forEach(column => this.addColumn(column));
+    },
+
+    createColumn: function() {
+        const name = prompt("New column name:");
+
+        httpRequest("/column", "POST", { name }).then(resp => this.addColumn({ name, id: resp.id }));
+    },
+
+    addColumn: function({ name, id, cards }) {
+        new Column({ name, id, cards, parentBoardId: this.id }).render();
     }
-}
+};
